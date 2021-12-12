@@ -4,11 +4,21 @@ import EventItem from '../components/EventItem'
 import { API_URL } from '../config/index'
 
 export default function HomePage({ events }) {
-  console.log(events)
   return (
     <Layout>
       <h1>Upcoming Events</h1>
-      <h3></h3>
+      {events.length === 0 && <h3>No event</h3>}
+      {events.slice(0,3).map(idx => (
+        <EventItem key={idx.id} evt={idx}/>
+      ))}
+      {console.log('length', events.length > 0)}
+      {
+      events.length > 0 && 
+      <Link href='/events'>
+      <a className='btn-secondary'>View All</a>
+      </Link>
+      }
+     
     </Layout>
   )
 }
@@ -18,6 +28,7 @@ export async function getServerSideProps() {
   const events = await res.json();
 
   return {
-    props:{events},
+    props:{events: events
   }
+}
 }
